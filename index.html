@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EC2 Key Pair Across Regions | Vishwanath Gowda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fa;
+      color: #333;
+      padding: 2rem;
+    }
+    header {
+      background: #1e293b;
+      color: #fff;
+      padding: 2rem 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #cbd5e1;
+    }
+    main {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    }
+    h2 {
+      color: #1e293b;
+      border-left: 4px solid #3b82f6;
+      padding-left: 0.5rem;
+    }
+    pre, code {
+      background: #f1f5f9;
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: monospace;
+      overflow-x: auto;
+    }
+    .image-placeholder {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: #e2e8f0;
+      border-radius: 8px;
+      font-style: italic;
+      text-align: center;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #64748b;
+      text-align: center;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🔐 How to Use the Same EC2 Key Pair Across Multiple AWS Regions</h1>
+    <p>Written by <strong>Vishwanath Gowda</strong> | Cloud Security Engineer & DevSecOps Specialist</p>
+  </header>
+  <main>
+    <h2>📌 Why This Matters</h2>
+    <p>EC2 key pairs in AWS are region-specific. If you're deploying EC2 instances in multiple AWS regions, you can't use the same key pair directly. This guide helps you import and reuse a single key across all regions.</p>
+
+    <h2>🧰 Prerequisites</h2>
+    <ul>
+      <li>Have your <code>.pem</code> file safely stored</li>
+      <li><strong>Mac/Linux:</strong> <code>ssh-keygen</code> or <code>openssl</code></li>
+      <li><strong>Windows:</strong> <code>PuTTYgen</code> installed</li>
+    </ul>
+
+    <h2>🛠️ Step-by-Step Methods</h2>
+    <h3>Method 1: Manual Import via Console</h3>
+
+    <h4>1️⃣ Extract Public Key</h4>
+    <p>For Linux/macOS:</p>
+    <pre><code>ssh-keygen -y -f my-key.pem &gt; my-key.pub</code></pre>
+
+    <p>Or use OpenSSL:</p>
+    <pre><code>openssl rsa -in my-key.pem -pubout &gt; my-key.pub</code></pre>
+
+    <h4>2️⃣ Import to Other AWS Regions</h4>
+    <ol>
+      <li>Login to AWS Console</li>
+      <li>Switch to a new region (e.g., ap-south-1)</li>
+      <li>Go to EC2 → Key Pairs → Create → Import Key Pair</li>
+      <li>Paste contents of <code>my-key.pub</code></li>
+    </ol>
+
+    <div class="image-placeholder">[Insert Screenshot: AWS Console → Import Key Pair]</div>
+
+    <h4>3️⃣ Repeat for All Required Regions</h4>
+
+    <h3>Method 2: Use AWS CLI</h3>
+
+    <pre><code>aws ec2 import-key-pair \
+  --key-name "my-global-key" \
+  --public-key-material "file://my-key.pub" \
+  --region ap-south-1</code></pre>
+
+    <h2>🧪 Key Format Conversions</h2>
+    <pre><code># Convert PEM to OpenSSH
+ssh-keygen -i -m PKCS8 -f public-key-pem.pub &gt; public-key-openssh.pub
+
+# Convert OpenSSH to PEM
+ssh-keygen -e -m PEM -f public-key-openssh.pub &gt; public-key-pem.pub</code></pre>
+
+    <h2>🔍 Verify Key Fingerprint</h2>
+    <pre><code>openssl rsa -in my-key.pem -pubout | openssl md5
+openssl pkey -in public-key-pem.pub -pubin | openssl md5</code></pre>
+
+    <h2>🪟 Windows (PuTTYgen Method)</h2>
+    <pre><code>puttygen my-key.ppk -t rsa</code></pre>
+    <p>Then copy the public key from PuTTYgen and paste it into the AWS Console.</p>
+
+    <div class="image-placeholder">[Insert Screenshot: PuTTYgen Key Output]</div>
+
+    <h2>🔐 Using AWS Secrets Manager (Optional)</h2>
+    <p>To manage SSH keys securely in team or automated environments:</p>
+    <pre><code>aws secretsmanager create-secret \
+  --name "global-ssh-key" \
+  --secret-string "$(cat my-key.pem)"
+
+aws secretsmanager get-secret-value \
+  --secret-id global-ssh-key \
+  --region us-east-1</code></pre>
+
+    <h2>✅ Summary</h2>
+    <ul>
+      <li>Key pairs are region-specific — AWS doesn’t sync them</li>
+      <li>You can reuse the same <code>.pem</code> globally by importing the public key manually or via CLI</li>
+      <li>Always secure your <code>.pem</code> — never expose it</li>
+      <li>For teams, use Secrets Manager or Session Manager</li>
+    </ul>
+
+    <div class="image-placeholder">[Insert Diagram: Key Flow Across Regions]</div>
+
+    <h2>📘 About the Author</h2>
+    <p><strong>Vishwanath Gowda</strong><br>
+    Cloud Security Engineer | DevSecOps Trainer | AWS Specialist</p>
+    <p>📌 Follow me on GitHub and Medium for hands-on cloud, security, and DevOps tutorials.<br>
+    💬 Contact me for mentoring, DevOps guidance, or cloud project support.</p>
+  </main>
+
+  <footer>
+    &copy; 2025 Vishwanath Gowda | Built for IT and Cloud Professionals
+  </footer>
+</body>
+</html>
