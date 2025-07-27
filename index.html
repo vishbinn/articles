@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Articles Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body and Font Styles */
+        body {
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Lighter grey background for a professional look */
+            color: #343a40; /* Darker text for better readability */
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #212529; /* Deep dark grey */
+            color: #ffffff;
+            padding: 0.8rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar ul li {
+            margin: 0 18px;
+        }
+
+        .navbar ul li a {
+            color: #e9ecef; /* Slightly off-white */
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1em;
+            padding: 10px 0;
+            display: block;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #007bff; /* Standard blue highlight */
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section Styling */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1518770660439-466d79a29e46?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+            color: #ffffff;
+            text-align: center;
+            padding: 100px 20px;
+            position: relative;
+            animation: fadeIn 1s ease-out;
+            border-bottom: 5px solid #007bff; /* Accent color */
+        }
+
+        .hero h1 {
+            font-size: 3.8em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+            font-weight: 300;
+        }
+
+        /* Main Content Area */
+        .container {
+            max-width: 1140px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+
+        /* Section Title Styling */
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #212529;
+            margin-bottom: 35px;
+            position: relative;
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background-color: #007bff;
+            border-radius: 1.5px;
+        }
+
+        /* Tech Cards Section */
+        .tech-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Smaller cards */
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            text-align: center;
+            padding: 20px; /* Reduced padding */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #e9ecef;
+            height: 100%; /* Ensure consistent height */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            max-width: 70px; /* Smaller logos */
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #007bff;
+            font-size: 1.4em; /* Smaller font size */
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 0.9em; /* Smaller font size */
+            color: #6c757d; /* Muted text color */
+            flex-grow: 1;
+            margin-bottom: 15px; /* Reduced margin */
+        }
+
+        .card .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 18px; /* Smaller button padding */
+            border-radius: 20px; /* More rounded */
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9em; /* Smaller font size */
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .card .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Article List Section */
+        .article-list {
+            margin-top: 50px;
+            padding: 30px 0;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .article-list h2 {
+            text-align: center;
+            color: #212529;
+            font-size: 2.2em; /* Smaller title */
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+            font-weight: 600;
+        }
+        .article-list h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #28a745; /* Green accent */
+            border-radius: 1.5px;
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Smaller article cards */
+            gap: 20px; /* Reduced gap */
+            padding: 0 20px; /* Reduced padding */
+        }
+
+        .article-card {
+            background-color: #fcfcfc;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Ensure consistent height */
+        }
+
+        .article-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-card img {
+            width: 100%;
+            height: 180px; /* Smaller image height */
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .article-card-content {
+            padding: 15px; /* Reduced padding */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card-content h3 {
+            margin-top: 0;
+            font-size: 1.2em; /* Smaller font size */
+            color: #343a40;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            font-weight: 500;
+        }
+
+        .article-card-content p {
+            font-size: 0.85em; /* Smaller font size */
+            color: #6c757d;
+            margin-bottom: 15px; /* Reduced margin */
+            flex-grow: 1;
+        }
+
+        .article-card-content .btn {
+            display: inline-block;
+            background-color: #28a745; /* Green for read more */
+            color: #fff;
+            padding: 6px 15px; /* Smaller button padding */
+            border-radius: 18px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85em; /* Smaller font size */
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            align-self: flex-start;
+        }
+
+        .article-card-content .btn:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+        }
+
+        /* Footer Styling */
+        .footer {
+            background-color: #212529;
+            color: #e9ecef;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 50px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
+            font-size: 0.9em;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+            color: #0056b3;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3em;
+            }
+            .hero p {
+                font-size: 1.1em;
+            }
+            .section-title, .article-list h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar ul {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .navbar ul li {
+                margin: 0;
+            }
+            .hero {
+                padding: 70px 15px;
+            }
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .hero p {
+                font-size: 1em;
+            }
+            .tech-cards, .article-grid {
+                grid-template-columns: 1fr; /* Single column on small screens */
+            }
+            .container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+            .card, .article-card {
+                padding: 15px;
+            }
+            .card h3 {
+                font-size: 1.3em;
+            }
+            .article-card-content h3 {
+                font-size: 1.1em;
+            }
+            .article-card img {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+            .hero p {
+                font-size: 0.85em;
+            }
+            .section-title, .article-list h2 {
+                font-size: 1.6em;
+            }
+            .card img {
+                max-width: 60px;
+            }
+            .card p {
+                font-size: 0.85em;
+            }
+            .article-card-content p {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#tech-cards-section">Technologies</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://github.com/your-github-username" target="_blank">GitHub</a></li>
+        </ul>
+    </nav>
+
+    <header id="home" class="hero">
+        <h1>Welcome to My Tech Article Hub!</h1>
+        <p>Explore in-depth articles on Cloud Computing, DevOps, Infrastructure as Code, and more.</p>
+    </header>
+
+    <main class="container">
+        <h2 class="section-title">Explore Top Technologies</h2>
+        <section id="tech-cards-section" class="tech-cards">
+            <div class="card" onclick="showArticles('aws')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS Logo">
+                <h3>Amazon Web Services (AWS)</h3>
+                <p>Dive deep into cloud computing with articles on EC2, S3, Lambda, VPC, and more. Master the world's leading cloud platform.</p>
+                <button class="btn" onclick="event.preventDefault(); showArticles('aws');">Explore AWS</button>
+            </div>
+
+            <div class="card" onclick="showArticles('azure')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg" alt="Azure Logo">
+                <h3>Microsoft Azure</h3>
+                <p>Learn about Azure services like Azure Virtual Machines, Azure Functions, Azure DevOps, and their robust enterprise solutions.</p>
+                <button class="btn" onclick="event.preventDefault(); showArticles('azure');">Explore Azure</button>
+            </div>
+
+            <div class="card" onclick="showArticles('kubernetes')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Kubernetes_logo_with_wordmark.svg" alt="Kubernetes Logo">
+                <h3>Kubernetes</h3>
+                <p>Master container orchestration, deployments, services, and scaling with Kubernetes. Revolutionize your application management.</p>
+                <button class="btn" onclick="event.preventDefault(); showArticles('kubernetes');">Explore Kubernetes</button>
+            </div>
+
+            <div class="card" onclick="showArticles('docker')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" alt="Docker Logo">
+                <h3>Docker</h3>
+                <p>Get hands-on with containerization, Dockerfiles, images, and Docker Compose. Build, ship, and run any app, anywhere.</p>
+                <button class="btn" onclick="event.preventDefault(); showArticles('docker');">Explore Docker</button>
+            </div>
+
+            <div class="card" onclick="showArticles('terraform')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Terraform_Logo.svg" alt="Terraform Logo">
+                <h3>Terraform</h3>
+                <p>Provision and manage your infrastructure as code using HashiCorp Terraform. Automate your cloud and on-prem environments.</p>
+                <button class="btn" onclick="event.preventDefault(); showArticles('terraform');">Explore Terraform</button>
+            </div>
+
+            <div class="card" onclick="showArticles('gcp')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Google_Cloud_logo.svg" alt="GCP Logo">
+                <h3>Google Cloud Platform (GCP)</h3>
+                <p>Discover GCP services, including Compute Engine, GKE, BigQuery, and serverless options for cutting-edge applications.</p>
+                <button class="btn" onclick="event.preventDefault(); showArticles('gcp');">Explore GCP</button>
+            </div>
+        </section>
+
+        <section id="article-list-section" class="article-list">
+            <h2 id="article-list-title"></h2>
+            <div id="articles-grid" class="article-grid">
+                </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="footer">
+        <p>&copy; 2025 My Tech Article Hub. All rights reserved.</p>
+        <p>Connect with me on <a href="https://github.com/your-github-username" target="_blank">GitHub</a></p>
+    </footer>
+
+    <script>
+        const articlesData = {
+            aws: [
+                { title: 'Understanding AWS EC2 Instances', description: 'A beginner\'s guide to Elastic Compute Cloud.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+EC2', link: 'articles/aws/ec2.html' },
+                { title: 'S3 Storage Classes Explained', description: 'Optimize costs with different S3 storage options.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+S3', link: 'articles/aws/s3.html' },
+                { title: 'Building Serverless APIs with AWS Lambda', description: 'Create event-driven serverless functions.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+Lambda', link: 'articles/aws/lambda.html' },
+                { title: 'VPC Networking Fundamentals on AWS', description: 'Configure your isolated cloud resources.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+VPC', link: 'articles/aws/vpc.html' },
+                { title: 'Managing Databases with RDS', description: 'Relational Database Service made easy.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+RDS', link: 'articles/aws/rds.html' },
+                { title: 'Introduction to IAM for AWS Security', description: 'Identity and Access Management best practices.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+IAM', link: 'articles/aws/iam.html' },
+                { title: 'Deploying Applications with Elastic Beanstalk', description: 'Simplified deployment for web applications.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+EB', link: 'articles/aws/elastic-beanstalk.html' },
+                { title: 'Monitoring AWS Resources with CloudWatch', description: 'Set up alarms and dashboards.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+CW', link: 'articles/aws/cloudwatch.html' },
+                { title: 'Using Route 53 for DNS Management', description: 'Register domains and manage DNS records.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+R53', link: 'articles/aws/route53.html' },
+                { title: 'Message Queuing with SQS', description: 'Decouple applications using Simple Queue Service.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+SQS', link: 'articles/aws/sqs.html' },
+                { title: 'Event-Driven Architectures with SNS', description: 'Publish-subscribe messaging for distributed systems.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+SNS', link: 'articles/aws/sns.html' },
+                { title: 'Container Orchestration with ECS', description: 'Run Docker containers on AWS.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+ECS', link: 'articles/aws/ecs.html' },
+                { title: 'CI/CD Pipelines with CodePipeline & CodeBuild', description: 'Automate your software release process.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+CI/CD', link: 'articles/aws/cicd.html' },
+                { title: 'Data Warehousing with Redshift', description: 'Analyze large datasets with a fully managed data warehouse.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+RS', link: 'articles/aws/redshift.html' },
+                { title: 'NoSQL Databases with DynamoDB', description: 'High-performance key-value and document database.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+DDB', link: 'articles/aws/dynamodb.html' },
+                { title: 'Machine Learning with SageMaker', description: 'Build, train, and deploy ML models.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+SM', link: 'articles/aws/sagemaker.html' },
+                { title: 'Cost Optimization Strategies on AWS', description: 'Tips and tricks to save money on your cloud bill.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+Cost', link: 'articles/aws/cost-optimization.html' },
+                { title: 'Serverless Websites with S3 & CloudFront', description: 'Host static websites globally.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+CF', link: 'articles/aws/static-website.html' },
+                { title: 'Security Best Practices on AWS', description: 'Protecting your cloud environment.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+Security', link: 'articles/aws/security.html' },
+                { title: 'Disaster Recovery on AWS', description: 'Strategies for business continuity.', image: 'https://via.placeholder.com/400x200/FF9900/FFFFFF?text=AWS+DR', link: 'articles/aws/dr.html' }
+            ],
+            azure: [
+                { title: 'Getting Started with Azure Virtual Machines', description: 'Provision your first VM on Azure.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+VM', link: 'articles/azure/vm.html' },
+                { title: 'Azure Functions: Serverless Computing', description: 'Develop event-driven serverless applications.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Functions', link: 'articles/azure/functions.html' },
+                { title: 'Azure Storage Solutions Overview', description: 'Blob, File, Queue, and Table storage.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Storage', link: 'articles/azure/storage.html' },
+                { title: 'Implementing Azure Active Directory', description: 'Manage identities and access in Azure.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+AD', link: 'articles/azure/ad.html' },
+                { title: 'Azure Networking Concepts Explained', description: 'VNet, Subnets, and Network Security Groups.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Networking', link: 'articles/azure/networking.html' },
+                { title: 'Azure DevOps: Pipelines and Repos', description: 'Automate your software delivery life cycle.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+DevOps', link: 'articles/azure/devops.html' },
+                { title: 'Monitoring Azure Resources with Azure Monitor', description: 'Collect, analyze, and act on telemetry data.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Monitor', link: 'articles/azure/monitor.html' },
+                { title: 'Azure SQL Database: Managed Relational Database', description: 'Scalable and secure cloud database.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+SQL', link: 'articles/azure/sql.html' },
+                { title: 'Using Azure Cosmos DB for NoSQL', description: 'Globally distributed, multi-model database service.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+CosmosDB', link: 'articles/azure/cosmosdb.html' },
+                { title: 'Azure Kubernetes Service (AKS) Overview', description: 'Managed Kubernetes in Azure.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+AKS', link: 'articles/azure/aks.html' },
+                { title: 'Azure App Service for Web Apps', description: 'Build, deploy, and scale web apps.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+AppService', link: 'articles/azure/appservice.html' },
+                { title: 'Azure Load Balancer vs. Application Gateway', description: 'Choosing the right load balancing solution.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+LB', link: 'articles/azure/loadbalancer.html' },
+                { title: 'Azure Policy for Governance', description: 'Enforce organizational standards and assess compliance.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Policy', link: 'articles/azure/policy.html' },
+                { title: 'Azure Bicep for Infrastructure as Code', description: 'Declarative syntax for deploying Azure resources.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Bicep', link: 'articles/azure/bicep.html' },
+                { title: 'Cost Management Strategies in Azure', description: 'Optimizing your Azure spending.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Cost', link: 'articles/azure/cost.html' },
+                { title: 'Azure Security Center: Threat Protection', description: 'Strengthen your security posture.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Security', link: 'articles/azure/security-center.html' },
+                { title: 'Azure Data Lake Storage for Big Data', description: 'Scalable data storage and analytics.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+DL', link: 'articles/azure/data-lake.html' },
+                { title: 'Integrating On-Premises Networks with Azure VPN Gateway', description: 'Hybrid connectivity solutions.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+VPN', link: 'articles/azure/vpn-gateway.html' },
+                { title: 'Azure Resource Groups and Management Groups', description: 'Organizing your Azure resources.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+RG', link: 'articles/azure/resource-groups.html' },
+                { title: 'Azure Functions Proxies for API Gateway', description: 'Simplify API development with proxies.', image: 'https://via.placeholder.com/400x200/0078D4/FFFFFF?text=Azure+Proxies', link: 'articles/azure/functions-proxies.html' }
+            ],
+            kubernetes: [
+                { title: 'Introduction to Kubernetes Pods', description: 'The smallest deployable unit in K8s.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Pods', link: 'articles/kubernetes/pods.html' },
+                { title: 'Kubernetes Deployments Explained', description: 'Managing declarative updates to Pods.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Deployments', link: 'articles/kubernetes/deployments.html' },
+                { title: 'Exposing Applications with Kubernetes Services', description: 'Networking in Kubernetes.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Services', link: 'articles/kubernetes/services.html' },
+                { title: 'Understanding Kubernetes Namespaces', description: 'Organizing resources in K8s clusters.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Namespaces', link: 'articles/kubernetes/namespaces.html' },
+                { title: 'Kubernetes Ingress Controllers for HTTP/S', description: 'External access to services in a cluster.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Ingress', link: 'articles/kubernetes/ingress.html' },
+                { title: 'Persistent Storage with Kubernetes Volumes', description: 'Managing data persistence for applications.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Volumes', link: 'articles/kubernetes/volumes.html' },
+                { title: 'ConfigMaps and Secrets in Kubernetes', description: 'Handling configuration data and sensitive information.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Config', link: 'articles/kubernetes/configmaps-secrets.html' },
+                { title: 'Rolling Updates and Rollbacks in K8s', description: 'Zero-downtime deployments and recovery.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Updates', link: 'articles/kubernetes/rolling-updates.html' },
+                { title: 'Understanding Kubernetes Networking Model', description: 'How pods and services communicate.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Network', link: 'articles/kubernetes/networking-model.html' },
+                { title: 'Horizontal Pod Autoscaler (HPA) in K8s', description: 'Automatically scale your application pods.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+HPA', link: 'articles/kubernetes/hpa.html' },
+                { title: 'Liveness and Readiness Probes', description: 'Ensuring application health in K8s.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Probes', link: 'articles/kubernetes/probes.html' },
+                { title: 'Kubernetes Operators: Automating Applications', description: 'Extend Kubernetes API for complex applications.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Operators', link: 'articles/kubernetes/operators.html' },
+                { title: 'Role-Based Access Control (RBAC) in K8s', description: 'Secure your Kubernetes cluster.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+RBAC', link: 'articles/kubernetes/rbac.html' },
+                { title: 'Helm Charts for Kubernetes Package Management', description: 'Simplify application deployment.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Helm', link: 'articles/kubernetes/helm.html' },
+                { title: 'Logging and Monitoring Kubernetes Clusters', description: 'Tools and best practices for observability.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Monitoring', link: 'articles/kubernetes/monitoring.html' },
+                { title: 'Troubleshooting Common Kubernetes Issues', description: 'Debugging pods, deployments, and services.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Troubleshoot', link: 'articles/kubernetes/troubleshooting.html' },
+                { title: 'Kubernetes Federation: Multi-Cluster Management', description: 'Manage multiple K8s clusters.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+Federation', link: 'articles/kubernetes/federation.html' },
+                { title: 'Custom Resource Definitions (CRDs) in K8s', description: 'Extend Kubernetes with your own APIs.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+CRD', link: 'articles/kubernetes/crds.html' },
+                { title: 'Kubernetes on Bare Metal: A Guide', description: 'Setting up K8s without a cloud provider.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+BareMetal', link: 'articles/kubernetes/bare-metal.html' },
+                { title: 'Introduction to Service Mesh (Istio/Linkerd)', description: 'Enhance your microservices with a service mesh.', image: 'https://via.placeholder.com/400x200/326CE5/FFFFFF?text=K8s+ServiceMesh', link: 'articles/kubernetes/service-mesh.html' }
+            ],
+            docker: [
+                { title: 'Your First Docker Container', description: 'Run a simple application in Docker.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Intro', link: 'articles/docker/first-container.html' },
+                { title: 'Building Docker Images with Dockerfiles', description: 'Create your own custom images.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Dockerfile', link: 'articles/docker/dockerfile.html' },
+                { title: 'Managing Multiple Containers with Docker Compose', description: 'Define and run multi-container Docker applications.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Compose', link: 'articles/docker/docker-compose.html' },
+                { title: 'Docker Volumes for Persistent Data', description: 'Ensure your container data persists.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Volumes', link: 'articles/docker/volumes.html' },
+                { title: 'Docker Networking: Bridging Containers', description: 'Understanding how Docker containers communicate.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Networking', link: 'articles/docker/networking.html' },
+                { title: 'Introduction to Docker Swarm', description: 'Simple container orchestration with Docker.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Swarm', link: 'articles/docker/swarm.html' },
+                { title: 'Optimizing Docker Images for Size and Security', description: 'Best practices for lean and secure images.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Optimize', link: 'articles/docker/optimize-images.html' },
+                { title: 'Dockerizing a Node.js Application', description: 'Step-by-step guide to containerizing Node.js.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Node', link: 'articles/docker/nodejs-app.html' },
+                { title: 'Dockerizing a Python Flask Application', description: 'Containerize your Flask web app.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Python', link: 'articles/docker/python-flask-app.html' },
+                { title: 'Understanding Docker Registries (Docker Hub)', description: 'Storing and sharing your Docker images.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Registry', link: 'articles/docker/registries.html' },
+                { title: 'Multi-stage Builds in Dockerfiles', description: 'Reduce image size with multi-stage builds.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Multistage', link: 'articles/docker/multi-stage-builds.html' },
+                { title: 'Running Databases in Docker Containers', description: 'PostgreSQL, MySQL, MongoDB in Docker.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+DBs', link: 'articles/docker/databases.html' },
+                { title: 'Docker Security Best Practices', description: 'Securing your containers and Docker daemon.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Security', link: 'articles/docker/security.html' },
+                { title: 'Debugging Docker Containers', description: 'Tips and tricks for troubleshooting issues.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Debug', link: 'articles/docker/debugging.html' },
+                { title: 'Docker Build Cache: Speeding up Builds', description: 'Leveraging cache for faster image creation.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Cache', link: 'articles/docker/build-cache.html' },
+                { title: 'Running Docker on Windows/macOS with WSL2/HyperKit', description: 'Local Docker setup guides.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+Desktop', link: 'articles/docker/docker-desktop.html' },
+                { title: 'Comparing Docker to Virtual Machines', description: 'Understanding the key differences and use cases.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+vs+VM', link: 'articles/docker/docker-vs-vm.html' },
+                { title: 'Using Docker for Development Environments', description: 'Creating consistent dev setups with Docker.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+DevEnv', link: 'articles/docker/dev-environments.html' },
+                { title: 'Continuous Integration with Docker and Jenkins', description: 'Automate build and test processes.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Docker+CI', link: 'articles/docker/ci-jenkins.html' },
+                { title: 'Understanding Dockerfile Instructions (CMD, ENTRYPOINT, RUN)', description: 'Deep dive into Dockerfile commands.', image: 'https://via.placeholder.com/400x200/0db7ed/FFFFFF?text=Dockerfile+CMD', link: 'articles/docker/dockerfile-instructions.html' }
+            ],
+            terraform: [
+                { title: 'Terraform Basics: Getting Started with IaC', description: 'Provisioning infrastructure as code.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Basics', link: 'articles/terraform/basics.html' },
+                { title: 'Terraform Modules: Reusability and Organization', description: 'Structuring your Terraform code.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Modules', link: 'articles/terraform/modules.html' },
+                { title: 'Managing State in Terraform', description: 'Understanding the Terraform state file.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+State', link: 'articles/terraform/state.html' },
+                { title: 'Terraform Providers: Interacting with APIs', description: 'Connect Terraform to various cloud and service providers.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Providers', link: 'articles/terraform/providers.html' },
+                { title: 'Input Variables and Output Values in Terraform', description: 'Making your configurations dynamic and reusable.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Vars', link: 'articles/terraform/variables-outputs.html' },
+                { title: 'Terraform Workspaces for Environment Management', description: 'Managing multiple environments with a single configuration.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Workspaces', link: 'articles/terraform/workspaces.html' },
+                { title: 'Terraform Backend Configuration', description: 'Remote state management and collaboration.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Backend', link: 'articles/terraform/backend.html' },
+                { title: 'Terraform and AWS: Launching an EC2 Instance', description: 'A hands-on example with AWS.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+AWS+EC2', link: 'articles/terraform/aws-ec2.html' },
+                { title: 'Terraform and Azure: Deploying a Virtual Machine', description: 'Infrastructure as Code on Azure.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Azure+VM', link: 'articles/terraform/azure-vm.html' },
+                { title: 'Terraform and GCP: Creating a GKE Cluster', description: 'Manage Kubernetes on Google Cloud.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+GCP+GKE', link: 'articles/terraform/gcp-gke.html' },
+                { title: 'Using Data Sources in Terraform', description: 'Referencing existing infrastructure.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Data', link: 'articles/terraform/data-sources.html' },
+                { title: 'Conditional Expressions in Terraform', description: 'Building flexible and dynamic configurations.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Conditional', link: 'articles/terraform/conditionals.html' },
+                { title: 'Terraform Functions and Expressions', description: 'Manipulating data within your configurations.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Functions', link: 'articles/terraform/functions.html' },
+                { title: 'Importing Existing Infrastructure into Terraform State', description: 'Bring existing resources under Terraform management.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Import', link: 'articles/terraform/import.html' },
+                { title: 'Terraform and CI/CD: Integrating with Jenkins', description: 'Automate your IaC deployments.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+CI/CD', link: 'articles/terraform/ci-cd.html' },
+                { title: 'Destroying Infrastructure with Terraform', description: 'Safely deprovisioning resources.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Destroy', link: 'articles/terraform/destroy.html' },
+                { title: 'Terraform Best Practices for Large Projects', description: 'Tips for scalable and maintainable IaC.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+BestPractices', link: 'articles/terraform/best-practices.html' },
+                { title: 'Terraform vs. CloudFormation vs. ARM Templates', description: 'A comparison of IaC tools.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Compare', link: 'articles/terraform/compare-iac.html' },
+                { title: 'Terraform Provisioners: Running Commands on Resources', description: 'Execute scripts after resource creation.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Provisioners', link: 'articles/terraform/provisioners.html' },
+                { title: 'Managing Sensitive Data with Terraform and Vault', description: 'Securely handling secrets in IaC.', image: 'https://via.placeholder.com/400x200/623FE5/FFFFFF?text=Terraform+Vault', link: 'articles/terraform/vault-integration.html' }
+            ],
+            gcp: [
+                { title: 'Compute Engine: Virtual Machines on GCP', description: 'Deploy and manage VMs in Google Cloud.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+CE', link: 'articles/gcp/compute-engine.html' },
+                { title: 'Google Kubernetes Engine (GKE) Deep Dive', description: 'Managed Kubernetes service by Google.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+GKE', link: 'articles/gcp/gke.html' },
+                { title: 'Serverless with Cloud Functions on GCP', description: 'Event-driven serverless compute.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+CF', link: 'articles/gcp/cloud-functions.html' },
+                { title: 'Cloud Storage: Object Storage in GCP', description: 'Scalable and durable object storage.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+Storage', link: 'articles/gcp/cloud-storage.html' },
+                { title: 'BigQuery: Data Warehousing on GCP', description: 'Analyze petabytes of data at scale.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+BQ', link: 'articles/gcp/bigquery.html' },
+                { title: 'Cloud SQL: Managed Relational Databases', description: 'PostgreSQL, MySQL, and SQL Server on GCP.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+CloudSQL', link: 'articles/gcp/cloud-sql.html' },
+                { title: 'Cloud Spanner: Horizontally Scalable Relational Database', description: 'Globally distributed, consistent database.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+Spanner', link: 'articles/gcp/cloud-spanner.html' },
+                { title: 'VPC Networks and Subnets in GCP', description: 'Networking fundamentals in Google Cloud.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+VPC', link: 'articles/gcp/vpc-networks.html' },
+                { title: 'Identity and Access Management (IAM) in GCP', description: 'Managing permissions and roles.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+IAM', link: 'articles/gcp/iam.html' },
+                { title: 'Cloud Pub/Sub: Real-time Messaging Service', description: 'Event-driven architectures with Pub/Sub.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+PubSub', link: 'articles/gcp/pubsub.html' },
+                { title: 'Cloud Build: Continuous Integration/Delivery', description: 'Automate your software builds and deployments.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+CloudBuild', link: 'articles/gcp/cloud-build.html' },
+                { title: 'Cloud Monitoring and Logging with Operations Suite', description: 'Observability for your GCP resources.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+Monitoring', link: 'articles/gcp/monitoring-logging.html' },
+                { title: 'App Engine: Platform as a Service (PaaS)', description: 'Build and deploy scalable web applications.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+AppEngine', link: 'articles/gcp/app-engine.html' },
+                { title: 'Cloud Firestore: NoSQL Document Database', description: 'Flexible, scalable database for mobile, web, and server development.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+Firestore', link: 'articles/gcp/firestore.html' },
+                { title: 'Cloud CDN: Content Delivery Network', description: 'Deliver content closer to your users.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+CDN', link: 'articles/gcp/cloud-cdn.html' },
+                { title: 'Dataflow: Serverless Data Processing', description: 'Batch and stream data processing.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+Dataflow', link: 'articles/gcp/dataflow.html' },
+                { title: 'Cloud AutoML: Machine Learning for Everyone', description: 'Build custom ML models with minimal effort.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+AutoML', link: 'articles/gcp/automl.html' },
+                { title: 'GCP Billing and Cost Management', description: 'Understanding and optimizing your cloud spending.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+Billing', link: 'articles/gcp/billing.html' },
+                { title: 'Cloud VPN and Cloud Interconnect', description: 'Hybrid connectivity to GCP.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+VPN', link: 'articles/gcp/vpn-interconnect.html' },
+                { title: 'Cloud Run: Serverless Containers', description: 'Run stateless containers on a fully managed platform.', image: 'https://via.placeholder.com/400x200/4285F4/FFFFFF?text=GCP+CloudRun', link: 'articles/gcp/cloud-run.html' }
+            ]
+        };
+
+        function showArticles(tech) {
+            const articleListSection = document.getElementById('article-list-section');
+            const articleListTitle = document.getElementById('article-list-title');
+            const articlesGrid = document.getElementById('articles-grid');
+
+            // Clear previous articles
+            articlesGrid.innerHTML = '';
+
+            // Set title, capitalize the first letter
+            articleListTitle.textContent = `${tech.charAt(0).toUpperCase() + tech.slice(1)} Articles`;
+
+            // Populate articles
+            const articles = articlesData[tech];
+            if (articles && articles.length > 0) {
+                articles.forEach(article => {
+                    const articleCard = `
+                        <div class="article-card">
+                            <img src="${article.image}" alt="${article.title}">
+                            <div class="article-card-content">
+                                <h3>${article.title}</h3>
+                                <p>${article.description}</p>
+                                <a href="${article.link}" class="btn" target="_blank">Read More</a>
+                            </div>
+                        </div>
+                    `;
+                    articlesGrid.innerHTML += articleCard;
+                });
+            } else {
+                articlesGrid.innerHTML = '<p style="text-align: center; font-size: 1.2em; color: #777;">No articles found for this category yet. Check back soon!</p>';
+            }
+
+            // Show the article list section
+            articleListSection.style.display = 'block';
+
+            // Scroll to the articles section
+            articleListSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
