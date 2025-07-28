@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serverless Websites with S3 & CloudFront</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background-color: #f8f8f8; }
+        .article-content { max-width: 800px; margin: 20px auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #007bff; }
+        h2 { color: #0056b3; margin-top: 1.5em; }
+        h3 { color: #003d7a; }
+        p { margin-bottom: 1em; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 0.5em; }
+        code { background: #f0f0f0; padding: 2px 4px; border-radius: 3px; font-family: monospace; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .note { background: #e7f4ff; padding: 10px; border-left: 3px solid #007bff; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="article-content">
+        <p><a href="../../index.html">&larr; Back to Home</a></p>
+        <h1>Serverless Websites with Amazon S3 & CloudFront</h1>
+        <p>This guide explains how to host a completely serverless, high-performance website using Amazon S3 for storage and CloudFront as a content delivery network (CDN).</p>
+        
+        <h2>Why Use S3 and CloudFront?</h2>
+        <ul>
+            <li><strong>Cost-effective:</strong> No servers to manage or pay for when idle</li>
+            <li><strong>Scalable:</strong> Automatically handles traffic spikes</li>
+            <li><strong>Fast:</strong> CloudFront delivers content from edge locations worldwide</li>
+            <li><strong>Secure:</strong> Built-in HTTPS and DDoS protection</li>
+            <li><strong>Reliable:</strong> AWS's 99.9% availability SLA</li>
+        </ul>
+
+        <h2>Step-by-Step Implementation</h2>
+
+        <h3>1. Set Up Amazon S3 Bucket</h3>
+        <p>Create a bucket to host your static website files:</p>
+        <ol>
+            <li>Go to <strong>AWS S3 Console</strong> → <strong>Create Bucket</strong></li>
+            <li>Configure:
+                <ul>
+                    <li><strong>Bucket Name:</strong> <code>your-website-domain.com</code> (must be globally unique)</li>
+                    <li><strong>Region:</strong> Choose closest to your users</li>
+                    <li><strong>Block Public Access:</strong> Uncheck (enable public access)</li>
+                </ul>
+            </li>
+        </ol>
+
+        <div class="note">
+            <strong>Important:</strong> Enable "Static website hosting" in bucket Properties and set <code>index.html</code> as the index document.
+        </div>
+
+        <h3>2. Configure Bucket Policy</h3>
+        <p>Add this policy to make objects publicly readable:</p>
+        <pre>
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::your-website-domain.com/*"
+    }
+  ]
+}</pre>
+
+        <h3>3. Set Up CloudFront Distribution</h3>
+        <ol>
+            <li>Go to <strong>CloudFront Console</strong> → <strong>Create Distribution</strong></li>
+            <li>Configure:
+                <ul>
+                    <li><strong>Origin Domain:</strong> Select your S3 bucket</li>
+                    <li><strong>S3 Bucket Access:</strong> Use OAI (Origin Access Identity)</li>
+                    <li><strong>Viewer Protocol Policy:</strong> Redirect HTTP to HTTPS</li>
+                    <li><strong>Cache Policy:</strong> CachingOptimized</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>4. Upload Website Files</h3>
+        <p>Your website should include at minimum:</p>
+        <ul>
+            <li><code>index.html</code> - Main page</li>
+            <li><code>styles.css</code> - Styling</li>
+            <li><code>images/</code> - Logo and other assets</li>
+        </ul>
+
+        <h3>5. Connect Custom Domain (Optional)</h3>
+        <p>Using Route 53:</p>
+        <ol>
+            <li>Create a hosted zone for your domain</li>
+            <li>Add an A record pointing to your CloudFront distribution</li>
+            <li>Request an SSL certificate in ACM and assign to CloudFront</li>
+        </ol>
+
+        <h2>Sample Website Code</h2>
+        
+        <h3>index.html</h3>
+        <pre>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;My Serverless Site&lt;/title&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;img src="images/logo.png" alt="Logo"&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;h1&gt;Welcome to My Serverless Website&lt;/h1&gt;
+    &lt;/main&gt;
+    &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+        <h2>Best Practices</h2>
+        <ul>
+            <li>Use <strong>versioning</strong> on your S3 bucket for backup</li>
+            <li>Implement <strong>cache invalidation</strong> in CloudFront when updating files</li>
+            <li>Set up <strong>monitoring</strong> with CloudWatch</li>
+            <li>Consider <strong>WAF</strong> for additional security</li>
+        </ul>
+
+        <p><em>Published: July 28, 2025</em></p>
+    </div>
+</body>
+</html>
