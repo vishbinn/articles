@@ -1,0 +1,197 @@
+Project 1: Round Robin Load Balancing Across Two EC2s
+
+Objective: Distribute traffic evenly across two EC2 instances using ALB.
+
+Steps:
+
+Launch 2 EC2 Amazon Linux 2023 instances with port 80 open.
+
+Install Apache and add different content:
+
+EC2-1: "This is Server 1"
+
+EC2-2: "This is Server 2"
+
+Create ALB and a single Target Group.
+
+Register both EC2s into the target group.
+
+Attach the TG to ALB listener rule (default).
+
+Access ALB DNS in browser repeatedly.
+
+Outcome: Load balances traffic round-robin style.
+
+Project 2: Blue-Green Deployment with ALB
+
+Objective: Deploy new app version with zero downtime.
+
+Steps:
+
+EC2-1 (Blue): "Version 1"
+
+EC2-2 (Green): "Version 2"
+
+Create two target groups: blue-tg, green-tg
+
+ALB Listener Path Rules:
+
+/v1/* → blue-tg
+
+/v2/* → green-tg
+
+Test:
+
+http://ALB-DNS/v1/
+
+http://ALB-DNS/v2/
+
+When Green is tested, switch /v1/* to green-tg.
+
+Rollback by pointing /v1/* back to blue-tg
+
+Outcome: Allows version upgrades with rollback option.
+
+Project 3: Path-Based Routing for Microservices
+
+Objective: Route based on URL path.
+
+Steps:
+
+EC2-1: /app1 HTML content
+
+EC2-2: /app2 HTML content
+
+Create two TGs: app1-tg, app2-tg
+
+ALB Listener Path Rules:
+
+/app1/* → app1-tg
+
+/app2/* → app2-tg
+
+Outcome: Routes microservices or apps on same domain via paths.
+
+Project 4: Host-Based Routing for Domains
+
+Objective: Route traffic to different servers based on domain.
+
+Steps:
+
+Register two subdomains: app1.binbash.in, app2.binbash.in
+
+EC2-1 and EC2-2 with unique content.
+
+Create two TGs and ALB.
+
+ALB Listener Host Rules:
+
+Host is app1.binbash.in → app1-tg
+
+Host is app2.binbash.in → app2-tg
+
+Setup Route53/Domain DNS A records to ALB.
+
+Outcome: Route traffic based on domain name.
+
+Project 5: Weighted Target Groups (Canary Deployment)
+
+Objective: Shift traffic slowly to new version.
+
+Steps:
+
+EC2-1 (stable), EC2-2 (new)
+
+Create 2 TGs: stable-tg, canary-tg
+
+ALB Listener Rule with weight:
+
+stable-tg 90%
+
+canary-tg 10%
+
+Gradually shift weight to 50-50, then 100%
+
+Outcome: Perform safe deployments by testing gradually.
+
+Project 6: Multi-Port ALB Routing
+
+Objective: Route traffic to different apps on different ports.
+
+Steps:
+
+EC2 running Apache on port 80, Node.js on port 8080
+
+Create TG1 (port 80), TG2 (port 8080)
+
+Listener rules:
+
+/web/* → TG1
+
+/api/* → TG2
+
+Outcome: One ALB serving multiple apps on same instance.
+
+Project 7: Internal ALB in Private VPC
+
+Objective: ALB for internal microservices only.
+
+Steps:
+
+Launch EC2s in private subnet
+
+ALB type: Internal
+
+Setup private DNS resolution
+
+App1 calls App2 via ALB endpoint
+
+Outcome: Secured internal routing within VPC.
+
+Project 8: ALB + Auto Scaling Group + Health Checks
+
+Objective: Handle scale-in/out with failover.
+
+Steps:
+
+Launch ASG for EC2s with Apache
+
+ALB forwards to ASG-based TG
+
+Set health check path /index.html
+
+Unhealthy instance auto-replaced
+
+Outcome: Fault tolerance with scale.
+
+Project 9: ALB + Lambda Target
+
+Objective: Route traffic to serverless app via ALB.
+
+Steps:
+
+Create Lambda returning HTTP
+
+Create TG for Lambda
+
+ALB Rule /lambda/* → Lambda TG
+
+Test via browser
+
+Outcome: ALB invokes Lambda functions.
+
+Project 10: CloudFront + ALB Integration
+
+Objective: Add CDN in front of ALB.
+
+Steps:
+
+Setup public ALB for EC2 site
+
+Create CloudFront distribution
+
+Origin = ALB DNS
+
+Enable caching, HTTPS, custom headers
+
+Outcome: Fast global delivery of content.
